@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,18 +16,3 @@ use App\Http\Controllers\UserController;
 Route::get('/', function () {
     return view('welcome');
 });
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
-require __DIR__.'/auth.php';
-
- Route::view('/register','register');
-Route::post('/registration',[UserController::class,'store']);
-
-
- Route::view('/signin','signin');
- Route::post('/Sign/In',[UserController::class,'login']);
-
- Route::view('/index','index');

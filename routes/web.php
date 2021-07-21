@@ -29,3 +29,6 @@ Route::post('/registration',[UserController::class,'store']);
 
 
  Route::view('/signin','signin');
+ Route::post('/Sign/In',[UserController::class,'login']);
+
+ Route::view('/index','index');

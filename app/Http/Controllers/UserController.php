@@ -1,0 +1,57 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Registration;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Validation\Rules;
+
+class UserController extends Controller
+{
+    public function store(Request $request){
+        
+
+        $request->validate([
+            'name'              => 'required|string|max:255|min:3',
+            'email'             => 'required|string|email|max:255|unique:registrations',
+            'password'          => 'required|alpha_num|min:6',
+            'confirm_password'  => 'required|same:password',
+        ]);
+       
+        $data=array(
+            "name"      => $request->name,
+            "email"         => $request->email,
+            "password"      => Crypt::encrypt($request->password)               
+
+        );
+        
+
+        $user=Registration::create($data);
+        return redirect('/signin') ;
+    }
+
+    public function login(Request $request){
+        echo "hello";
+        $request->validate([
+            'email' => 'required',
+            'password' => 'required'
+        ]);
+        $user= Registration::where("email",$request->input('email'))->first();
+        // dd($user);
+        if($user){
+            if(Crypt::decrypt( $user->password)==$request->input('password'))
+            {
+                 $request->session()->put('user',$user);
+                return redirect('index');
+            }
+            else{
+                return back()->with("fail", "Password not matched");
+             }
+        }
+        else{
+            return back()->with("fail", "Account not found for this email");
+        }
+    }
+}

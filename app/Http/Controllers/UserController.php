@@ -29,6 +29,29 @@ class UserController extends Controller
         
 
         $user=Registration::create($data);
-        return $user;
+        return redirect('/signin') ;
+    }
+
+    public function login(Request $request){
+        echo "hello";
+        $request->validate([
+            'email' => 'required',
+            'password' => 'required'
+        ]);
+        $user= Registration::where("email",$request->input('email'))->first();
+        // dd($user);
+        if($user){
+            if(Crypt::decrypt( $user->password)==$request->input('password'))
+            {
+                 $request->session()->put('user',$user);
+                return redirect('index');
+            }
+            else{
+                return back()->with("fail", "Password not matched");
+             }
+        }
+        else{
+            return back()->with("fail", "Account not found for this email");
+        }
     }
 }

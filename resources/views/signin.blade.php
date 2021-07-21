@@ -23,9 +23,11 @@
             <h2 class="text-center font-semibold text-3xl lg:text-4xl text-gray-800">
                 Login
             </h2>
-@csrf
-            <form class="mt-10" method="POST">
+        @csrf
+            <form class="mt-10" method="POST" action="{{ url('Sign/In') }}">
                 <!-- Email Input -->
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
                 <label for="email" class="block text-xs font-semibold text-gray-600 uppercase">E-mail</label>
                 <input id="email" type="email" name="email" placeholder="e-mail address" autocomplete="email"
                     class="block w-full py-3 px-1 mt-2 

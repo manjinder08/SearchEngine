@@ -12,10 +12,21 @@
 <form method="post" action="{{ url('registration') }}">
             @csrf
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-<div class="bg-grey-lighter min-h-screen flex flex-col">
+    <div class="bg-grey-lighter min-h-screen flex flex-col">
             <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
                 <div class="bg-white px-6 py-8 rounded shadow-md text-black w-full">
                     <h1 class="mb-8 text-3xl text-center">Sign up</h1>
+                    @if(Session::has('success'))
+                            <div class="alert alert-success alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                {{Session::get('success')}}
+                            </div>
+                        @elseif(Session::has('failed'))
+                            <div class="alert alert-danger alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert">×</button>
+                                {{Session::get('failed')}}
+                            </div>
+                        @endif
                     <input 
                         type="text"
                         class="block border border-grey-light w-full p-3 rounded mb-4"

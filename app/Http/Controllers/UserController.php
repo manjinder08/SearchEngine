@@ -29,7 +29,12 @@ class UserController extends Controller
         
 
         $user=Registration::create($data);
-        return redirect('/signin') ;
+        if(!is_null($user)) {
+            $request->session()->put('user',$request->input('name'));
+            Session::flash('success', 'Successfully Registered!');
+            return redirect('/signin');
+        }
+     
     }
 
     public function login(Request $request){
@@ -39,7 +44,6 @@ class UserController extends Controller
             'password' => 'required'
         ]);
         $user= Registration::where("email",$request->input('email'))->first();
-        // dd($user);
         if($user){
             if(Crypt::decrypt( $user->password)==$request->input('password'))
             {

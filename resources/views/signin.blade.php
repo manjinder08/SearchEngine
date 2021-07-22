@@ -24,36 +24,49 @@
                 Login
             </h2>
         @csrf
+
+        @if(Session::has('success'))
+                <div class="alert alert-success">
+                    {{Session::get('success')}}
+                </div>
+                @endif
+            </div>
+            <div class="result">
+                @if(Session::get('fail'))
+                    <div class="alert alert-danger">
+                        {{Session::get('fail')}}
+                    </div>
+                @endif
+
             <form class="mt-10" method="POST" action="{{ url('Sign/In') }}">
-                <!-- Email Input -->
+        <!-- Email Input -->
                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                 <label for="email" class="block text-xs font-semibold text-gray-600 uppercase">E-mail</label>
                 <input id="email" type="email" name="email" placeholder="e-mail address" autocomplete="email"
-                    class="block w-full py-3 px-1 mt-2 
-                    text-gray-800 appearance-none 
-                    border-b-2 border-gray-300
-                    focus:text-gray-500 focus:outline-none focus:border-gray-200 focus:border-b-2"
-                    required />
-
-                <!-- Password Input -->
+                        class="block w-full py-3 px-1 mt-2 
+                        text-gray-800 appearance-none 
+                        border-b-2 border-gray-300
+                        focus:text-gray-500 focus:outline-none focus:border-gray-200 focus:border-b-2"
+                        required />
+                        {!!$errors->first("email", "<span class='text-danger'>:message</span>")!!}
+        <!-- Password Input -->
                 <label for="password" class="block mt-2 text-xs font-semibold text-gray-600 uppercase">Password</label>
                 <input id="password" type="password" name="password" placeholder="password" autocomplete="current-password"
-                    class="block w-full py-3 px-1 mt-2 mb-4
-                    text-gray-800 appearance-none 
-                    border-b-2 border-gray-300
-                    focus:text-gray-500 focus:outline-none focus:border-gray-200 focus:border-b-2"
-                    required />
-
-                <!-- Auth Buttton -->
+                            class="block w-full py-3 px-1 mt-2 mb-4
+                            text-gray-800 appearance-none 
+                            border-b-2 border-gray-300
+                            focus:text-gray-500 focus:outline-none focus:border-gray-200 focus:border-b-2"
+                            required />
+                            {!!$errors->first("password", "<span class='text-danger'>:message</span>")!!}
+        <!-- Auth Buttton -->
                 <button type="submit"
                     class="w-full py-3 mt-10 bg-gray-800 rounded-sm
                     font-medium text-white uppercase
                     focus:outline-none hover:bg-gray-700 hover:shadow-none">
                     Login
                 </button>
-
-                <!-- Another Auth Routes -->
+        <!-- Another Auth Routes -->
                 <div class="sm:flex sm:flex-wrap mt-8 sm:mb-4 text-sm text-center">
                     <a href="#" class="flex-2 underline">
                         Forgot password?

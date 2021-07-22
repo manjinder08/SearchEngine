@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Models\Registration;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,3 +33,22 @@ Route::post('/registration',[UserController::class,'store']);
  Route::post('/Sign/In',[UserController::class,'login']);
 
  Route::view('/index','index');
+
+ Route::view('/search','search');
+
+ Route::get('/searchall', function () {
+    return view('search', [
+        'users' =>  App\Models\Registration::all(),
+    ]);
+});
+
+Route::get('/search', function(UserController $fun){
+    if($data=Redis::get('data')){  
+        echo "redis--->";
+        return json_decode($data);
+    }
+    
+    $user = $fun->search(request('query'));
+    Redis::setex('data',60*24, $user);
+       return json_decode($user);
+});

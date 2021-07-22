@@ -7,6 +7,7 @@ use App\Models\Registration;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
@@ -38,7 +39,6 @@ class UserController extends Controller
     }
 
     public function login(Request $request){
-        echo "hello";
         $request->validate([
             'email' => 'required',
             'password' => 'required'
@@ -58,4 +58,14 @@ class UserController extends Controller
             return back()->with("fail", "Account not found for this email");
         }
     }
+
+    public function search(string $query=''){
+        echo "here";
+        return Registration::query()
+             
+        ->Where('name', 'LIKE', "%{$query}%")
+        ->orWhere('email', 'LIKE', "%{$query}%")
+        ->get();
+    }
+
 }

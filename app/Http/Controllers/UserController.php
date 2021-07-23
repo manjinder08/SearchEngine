@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Artisan;
 
 class UserController extends Controller
 {
@@ -29,8 +30,10 @@ class UserController extends Controller
         );
         
 
-        $user=Registration::create($data);
-        if(!is_null($user)) {
+       
+        if(!is_null($data)) {
+            $user=Registration::create($data);
+            Artisan::call('search:reindex');
             $request->session()->put('user',$request->input('name'));
             Session::flash('success', 'Successfully Registered!');
             return redirect('/signin');

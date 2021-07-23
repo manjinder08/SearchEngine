@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Models\Registration;
+use App\CustomRepo\Searchrepo;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,12 +43,23 @@ Route::post('/registration',[UserController::class,'store']);
     ]);
 });
 
-Route::get('/search', function(UserController $fun){
-    if($data=Redis::get('data')){  
+Route::get('/search', function(Searchrepo $fun){
+    $query=request('query');    
+    
+    $data =  Redis::get('data');
+    if (strpos($data, $query) !== false) {
+        echo "redis....";
         return json_decode($data);
     }
+    // if(!empty($data[0]['name']) && $query === $data[0]['name']){
+    //     echo "redis....";
+    //     $data =  json_decode(Redis::get('data'), true);    
+    //     return $data;
+    // }
     
     $user = $fun->search(request('query'));
+ 
     Redis::setex('data',60*24, $user);
+    echo "here....";
        return json_decode($user);
 });

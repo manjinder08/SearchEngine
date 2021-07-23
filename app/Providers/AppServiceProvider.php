@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Providers;
-use App\Customrepo;
+use App\CustomRepo;
 use Elasticsearch\ClientBuilder;
 use Elasticsearch\Client;
 use Illuminate\Support\ServiceProvider;

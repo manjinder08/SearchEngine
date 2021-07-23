@@ -6,10 +6,11 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
+use App\Observers\Searchable;
 
 class Registration extends Model
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, Searchable;
 
     protected $fillable = [
         'name',

@@ -44,7 +44,6 @@ Route::post('/registration',[UserController::class,'store']);
 
 Route::get('/search', function(UserController $fun){
     if($data=Redis::get('data')){  
-        echo "redis--->";
         return json_decode($data);
     }
     

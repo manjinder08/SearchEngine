@@ -13,8 +13,8 @@
             @csrf
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="bg-grey-lighter min-h-screen flex flex-col">
-            <div class="container max-w-sm mx-auto flex-1 flex flex-col items-center justify-center px-2">
-                <div class="bg-white px-6 py-8 rounded shadow-md text-black w-full">
+            <div class="container  border border-grey-200 max-w-sm mx-auto my-auto shadow-lg h-full flex flex-col items-center justify-center px-2 py-5">
+                <div class="bg-white px-6 py-2 rounded text-black w-full">
                     <h1 class="mb-8 text-3xl text-center">Sign up</h1>
                     @if(Session::has('success'))
                             <div class="alert alert-success alert-dismissible">
@@ -62,9 +62,9 @@
 
                 <div class="text-grey-dark mt-6">
                     Already have an account? 
-                    <a class="no-underline border-b border-blue text-blue" href="/signin/">
+                    <a class="no-underline text-blue-500" href="/signin/">
                         Log in
-                    </a>.
+                    </a>
                 </div>
             </div>
         </div>

@@ -1,41 +1,40 @@
-<head>
-<meta charset="UTF-8" />
+    <head>
+            <meta charset="UTF-8" />
 
-<script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<link href="{{ asset('css/app.css') }}" rel="stylesheet">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-</head>
+            <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+            <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-
-<div class="container">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    </head>
+    <div class="flex-col">
         <div class="card">
-            <div class="card-header">
-            users <small>({{ $users->count() }})</small>
+            <div class="card-header" style="margin-left:600px;">
+                <!-- {{ var_dump($users[0]->name) }} -->
+                Users <small class="ml-0">({{ count($users) }})</small>
             </div>
-            <div class="card-body">
-                <form action="{{ url('search') }}" method="get">
-                    <div class="form-group">
-                        <input
-                            type="text"
-                            name="query"
-                            class="form-control"
-                            placeholder="Search..."
-                            value="{{ request('query') }}"
-                        />
-                    </div>
-                </form>
+            <form action="{{ url('search') }}" method="get">
+            <div class="flex">
+                <input class="w-96 ml-auto  rounded p-2" type="text" placeholder="Search..." value="{{ request('query') }}" name="query">
+                <button type="submit" class=" w-12  mr-auto justify-end items-center text-blue-500 p-2 hover:text-blue-400" >
+                    <i class="material-icons" style="margin-left: -100px;">search</i>
+                    
+                </button>
+            </div>
+            </form>
+              <div class="ml-44 space-y-10 flex-col">
                 @forelse ($users as $user)
-                    <article class="mb-3">
-                        <h2>{{ $user->name }}</h2>
+                    <data class="mb-3 ">
+                        <h2 class="text-xl font-bold text-blue-700">{{ $user->name }}</h2>
 
-                        <p class="m-0">{{ $user->email}}</body>
+                        <p class="m-0">{{ $user->email }}</p>
 
-                    </article>
+                    </data>
                 @empty
-                    <p>No articles found</p>
+                    <p>No users found</p>
                 @endforelse
               
             </div>

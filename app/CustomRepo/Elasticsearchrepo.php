@@ -30,7 +30,7 @@ class Elasticsearchrepo implements Searchrepo
             'body' => [
                 'query' => [
                     'multi_match' => [
-                        'fields' => ['name^5', 'email',],
+                        'fields' => ['name^5', 'email'],
                         'query' => $query,
                     ],
                 ],

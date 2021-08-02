@@ -39,7 +39,7 @@ Route::view('/search','search');
 
  Route::get('/searchall', function () {
      return view('search', [
-         'users' =>  App\Models\Registration::all(),
+         'users' =>  App\Models\Book::all(),
      ]);
  });
 
@@ -63,6 +63,14 @@ Route::view('/search','search');
         ]);
  });
 Route::view('/nav','layouts/nav');
+
+Route::view('/author','author');
+Route::view('/book','book');
+Route::view('/publisher','publisher');
+
+Route::post('author/save',[UserController::class,'author']);
+Route::post('book/save',[UserController::class,'book']);
+Route::post('publisher/save',[UserController::class,'publisher']);
 
     // if(!empty($data[0]['name']) && $query === $data[0]['name']){
     //     echo "redis....";

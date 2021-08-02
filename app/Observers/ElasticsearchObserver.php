@@ -13,13 +13,25 @@ class ElasticsearchObserver
         $this->elasticsearch = $elasticsearch;
     }
     
-    public function saved($model)
+    public function saved($model,$b,$p)
     {
         $this->elasticsearch->index([
             'index' => $model->getSearchIndex(),
             'type' => $model->getSearchType(),
             'id' => $model->getKey(),
             'body' => $model->toSearchArray(),
+        ]);
+        $this->elasticsearch->index([
+            'index' => $b->getSearchIndex(),
+            'type' => $b->getSearchType(),
+            'id' => $b->getKey(),
+            'body' => $b->toSearchArray(),
+        ]);
+        $this->elasticsearch->index([
+            'index' => $p->getSearchIndex(),
+            'type' => $p->getSearchType(),
+            'id' => $p->getKey(),
+            'body' => $p->toSearchArray(),
         ]);
     }
     /**

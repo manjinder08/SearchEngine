@@ -2,7 +2,8 @@
 
 namespace App\CustomRepo;
 
-use App\Models\Registration;
+use App\Models\Book;
+use App\Models\Author;
 use Elasticsearch\Client;
 use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Collection;
@@ -23,27 +24,53 @@ class Elasticsearchrepo implements Searchrepo
     }
     private function searchOnElasticsearch(string $query = ''): array
     { 
-        $model = new Registration;
-            $items = $this->elasticsearch->search([
+        $model = new Author;
+            $author = $this->elasticsearch->search([
             'index' => $model->getSearchIndex(),
             'type' => $model->getSearchType(),
             'body' => [
                 'query' => [
                     'multi_match' => [
-                        'fields' => ['name^5', 'email'],
+                        'fields' => ['name^5', 'email','contact'],
                         'query' => $query,
                     ],
                 ],
             ],
         ]);
-       return $items;
+        $b= new Book;
+        $book = $this->elasticsearch->search([
+            'index' => $b->getSearchIndex(),
+            'type' => $b->getSearchType(),
+            'body' => [
+                'query' => [
+                    'multi_match' => [
+                        'fields' => ['name^5', 'edition','price'],
+                        'query' => $query,
+                    ],
+                ],
+            ],
+        ]);
+            $p= new Publisher;
+        $publisher = $this->elasticsearch->search([
+            'index' => $p->getSearchIndex(),
+            'type' => $p->getSearchType(),
+            'body' => [
+                'query' => [
+                    'multi_match' => [
+                        'fields' => ['name^5', 'email','country','phone'],
+                        'query' => $query,
+                    ],
+                ],
+            ],
+        ]);
+       return $items=with($author,$book,$publisher);
     }
 
     private function buildCollection(array $items): Collection
     {
         $ids = Arr::pluck($items['hits']['hits'], '_id');
 
-        return Registration::findMany($ids)
+        return Book::findMany($ids)
             ->sortBy(function ($users) use ($ids) {
                 return array_search($users->getKey(), $ids);
             });

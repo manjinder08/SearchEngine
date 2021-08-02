@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Registration;
+use App\Models\Author;
+use App\Models\Book;
+use App\Models\Publisher;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Validation\Rules;
@@ -70,5 +73,31 @@ class UserController extends Controller
         ->orWhere('email', 'LIKE', "%{$query}%")
         ->get();
     }
+
+    public function author(Request $request){
+
+        $request->validate([
+            'name'              => 'required|string|max:255|min:3',
+            'email'             => 'required|string|email|max:255|unique:registrations',
+            'contact'          => 'required|min:10',
+           
+        ]);
+       
+        $data=array(
+            "name"      => $request->name,
+            "email"         => $request->email,
+            "contact"      => $request->contact,              
+
+        );
+        $user=Author::create($data);
+        $request->session()->put('user',$request->input('name'));
+            Session::flash('success', 'Successfully Added!');
+            return redirect('/author');
+        
+    }
+    public function book(Request $request){
+
+    }
+   
 
 }

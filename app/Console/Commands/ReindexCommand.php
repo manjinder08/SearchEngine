@@ -43,7 +43,7 @@ class ReindexCommand extends Command
     public function handle()
     {
         $this->info('Indexing all Registrations. This might take a while...');
-        foreach (Registration::cursor() as $users)
+        foreach (Book::cursor() as $users)
         {
             $this->elasticsearch->index([
                 'index' => $users->getSearchIndex(),

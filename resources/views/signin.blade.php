@@ -1,4 +1,5 @@
 <!-- component --><head>
+@include('layouts.nav')
 <meta charset="UTF-8" />
 
 <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
@@ -9,7 +10,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
-<form method="post" action="{{ url('registration') }}">
+<form method="post" action="{{ url('Sign') }}">
             @csrf
             <input type="hidden" name="_token" value="{{ csrf_token() }}">
     <div class="bg-grey-lighter min-h-screen flex flex-col">
@@ -43,7 +44,7 @@
                     <button
                         type="submit"
                         class="w-full text-center py-3 rounded bg-green-500 text-white hover:bg-green-dark focus:outline-none my-1"
-                    >Create Account</button>
+                    >Login</button>
 
                 </div>
 
@@ -55,4 +56,5 @@
                 </div>
             </div>
         </div>
-        </form>
+</form>
+        @include('layouts.footer')

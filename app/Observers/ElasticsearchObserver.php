@@ -3,7 +3,7 @@
 namespace App\Observers;
 
 use App\CustomRepo;
-use App\Registration;
+use App\Book;
 use Elasticsearch\Client;
 
 class ElasticsearchObserver
@@ -13,31 +13,20 @@ class ElasticsearchObserver
         $this->elasticsearch = $elasticsearch;
     }
     
-    public function saved($model,$b,$p)
+    public function saved($model)
     {
         $this->elasticsearch->index([
             'index' => $model->getSearchIndex(),
             'type' => $model->getSearchType(),
-            'id' => $model->getKey(),
+             'id' => $model->getKey(),
             'body' => $model->toSearchArray(),
         ]);
-        $this->elasticsearch->index([
-            'index' => $b->getSearchIndex(),
-            'type' => $b->getSearchType(),
-            'id' => $b->getKey(),
-            'body' => $b->toSearchArray(),
-        ]);
-        $this->elasticsearch->index([
-            'index' => $p->getSearchIndex(),
-            'type' => $p->getSearchType(),
-            'id' => $p->getKey(),
-            'body' => $p->toSearchArray(),
-        ]);
+        
     }
     /**
-     * Handle the Registration "created" event.
+     * Handle the Book "created" event.
      *
-     * @param  \App\Models\Registration  $Registration
+     * @param  \App\Models\Book  $Book
      * @return void
      */
     public function created()
@@ -46,9 +35,9 @@ class ElasticsearchObserver
     }
 
     /**
-     * Handle the Registration "updated" event.
+     * Handle the Book "updated" event.
      *
-     * @param  \App\Models\Registration  $Registration
+     * @param  \App\Models\Book  $Book
      * @return void
      */
     public function updated()
@@ -57,9 +46,9 @@ class ElasticsearchObserver
     }
 
     /**
-     * Handle the Registration "deleted" event.
+     * Handle the Book "deleted" event.
      *
-     * @param  \App\Models\Registration  $Registration
+     * @param  \App\Models\Book  $Book
      * @return void
      */
     public function deleted($model)
@@ -72,9 +61,9 @@ class ElasticsearchObserver
     }
 
     /**
-     * Handle the Registration "restored" event.
+     * Handle the Book "restored" event.
      *
-     * @param  \App\Models\Registration  $Registration
+     * @param  \App\Models\Book  $Book
      * @return void
      */
     public function restored()
@@ -83,9 +72,9 @@ class ElasticsearchObserver
     }
 
     /**
-     * Handle the Registration "force deleted" event.
+     * Handle the Book "force deleted" event.
      *
-     * @param  \App\Models\Registration  $Registration
+     * @param  \App\Models\Book  $Book
      * @return void
      */
     public function forceDeleted()

@@ -37,8 +37,8 @@ class UserController extends Controller
         if(!is_null($data)) {
             $user=Registration::create($data);
             Artisan::call('search:reindex');
-            $request->session()->put('user',$request->input('name'));
-            Session::flash('success', 'Successfully Registered!');
+            // $request->session()->put('user',$request->input('name'));
+            // Session::flash('success', 'Successfully Registered!');
             return redirect('/signin');
         }
      
@@ -53,7 +53,7 @@ class UserController extends Controller
         if($user){
             if(Crypt::decrypt( $user->password)==$request->input('password'))
             {
-                 $request->session()->put('user',$user);
+                $request->session()->put('users',$user);
                 return redirect('index');
             }
             else{
@@ -62,6 +62,13 @@ class UserController extends Controller
         }
         else{
             return back()->with("fail", "Account not found for this email");
+        }
+    }
+
+    public function logout(Request $request){
+        if(session()->has('users')){
+            session()->pull('users');
+            return redirect('signin');
         }
     }
 

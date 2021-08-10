@@ -23,9 +23,8 @@ class BookFactory extends Factory
     public function definition()
     {
         return [
-            'name'         =>      $this->faker->name(),
-            'edition'      =>      $this->faker->randomDigit(0,9),
-            'price'        =>      $this->faker->randomDigit(3),
+            'book_name'         =>      $this->faker->text(20),
+            'price'        =>      $this->faker->randomDigit(),
             'Author_id'    =>      function () {
                                         return Author::inRandomOrder()->first()->id;
                                     }

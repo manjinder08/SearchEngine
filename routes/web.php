@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\test;
 use App\Models\Registration;
 use App\CustomRepo\Searchrepo;
 
@@ -17,7 +18,7 @@ use App\CustomRepo\Searchrepo;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('register');
 });
 
 Route::get('/dashboard', function () {
@@ -26,55 +27,48 @@ Route::get('/dashboard', function () {
 
 require __DIR__.'/auth.php';
 
-Route::view('/register','register');
 Route::post('/registration',[UserController::class,'store']);
+Route::post('Sign',[UserController::class,'login']);
 
-
-Route::view('/signin','signin');
-Route::post('/Sign/In',[UserController::class,'login']);
-
-Route::view('/index','index');
-
-Route::view('/search','search');
-
- Route::get('/searchall', function () {
-     return view('search', [
-         'users' =>  App\Models\Book::all(),
+Route::get('/index', function () {
+       return view('index', [
+         'users' =>  App\Models\Book::query()
+         ->join('authors','authors.id','=','books.author_id')
+         ->get(),
      ]);
  });
 
- Route::get('/search', function(Searchrepo $fun){
-     $query=request('query');    
-     $data =  Redis::get('data');
+Route::get('/search', function(Searchrepo $search){
+    $query=request('query');    
+    $data =  Redis::get('data');
     if (strpos($data, $query) !== false) {
-        echo "redis...";
-        $data=json_decode(Redis::get('data'));
-
-        return view('search', [
+        echo "redis";
+            $data=json_decode(Redis::get('data'));
+        return view('index', [
         'users' => $data,
         ]);
-     }
+    }
 
-     $user = $fun->search(request('query'));
- Redis::setex('data',60*60*24, $user);
-       echo "here....";
-      return view('search', [
+    $user = $search->search(request('query'));
+    // dd($user);
+    return view('index', [
         'users' => $user,
         ]);
  });
-Route::view('/nav','layouts/nav');
+Route::get('/logout',[UserController::class,'logout']);
+Route::view('/register','register');
+Route::view('/signin','signin');
+Route::get('/test',[test::class,'a']);;
+// Route::view('/search','search');
+// Route::view('/index','index');
+// Route::view('/nav','layouts/nav');
+// Route::view('/author','author');
+// Route::view('/book','book');
+// Route::view('/publisher','publisher');
+// Route::view('/footer','layouts/footer');
 
-Route::view('/author','author');
-Route::view('/book','book');
-Route::view('/publisher','publisher');
+// Route::post('author/save',[UserController::class,'author']);
+// Route::post('book/save',[UserController::class,'book']);
+// Route::post('publisher/save',[UserController::class,'publisher']);
 
-Route::post('author/save',[UserController::class,'author']);
-Route::post('book/save',[UserController::class,'book']);
-Route::post('publisher/save',[UserController::class,'publisher']);
-
-    // if(!empty($data[0]['name']) && $query === $data[0]['name']){
-    //     echo "redis....";
-    //     $data =  json_decode(Redis::get('data'), true);    
-    //     return $data;
-    // }
-    
+   

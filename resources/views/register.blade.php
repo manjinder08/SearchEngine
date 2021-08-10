@@ -1,4 +1,5 @@
 <!-- component --><head>
+@include('layouts.nav')
 <meta charset="UTF-8" />
 
 <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
@@ -69,3 +70,4 @@
             </div>
         </div>
         </form>
+        @include('layouts.footer')

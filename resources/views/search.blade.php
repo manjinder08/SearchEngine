@@ -13,12 +13,11 @@
     <div class="flex-col">
         <div class="card">
             <div class="card-header" style="margin-left:600px;">
-                <!-- {{ var_dump($users[0]->name) }} -->
-                Users <small class="ml-0">({{ count($users) }})</small>
+                  Users <small class="ml-0">({{ count($users) }})</small>
             </div>
             <form action="{{ url('search') }}" method="get">
             <div class="flex">
-                <input class="w-96 ml-auto  rounded p-2" type="text" placeholder="Search..." value="{{ request('query') }}" name="query">
+                <input class="w-96 ml-auto  rounded p-2" type="text" placeholder="Search..." value="{{ request('query') }}" name="query" >
                 <button type="submit" class=" w-12  mr-auto justify-end items-center text-blue-500 p-2 hover:text-blue-400" >
                     <i class="material-icons" style="margin-left: -100px;">search</i>
                     
@@ -28,9 +27,9 @@
               <div class="ml-44 space-y-10 flex-col">
                 @forelse ($users as $user)
                     <data class="mb-3 ">
-                        <h2 class="text-xl font-bold text-blue-700">{{ $user->name }}</h2>
-
-                        <p class="m-0">{{ $user->email }}</p>
+                        <h2 class="text-xl font-bold text-blue-700">{{ $user->book_name }}</h2>
+                        <p class="m-0">{{ $user->author->author_name }} price {{$user->price}}</p>
+                        <p class="m-0">{{ $user->author->email }}</p>
 
                     </data>
                 @empty

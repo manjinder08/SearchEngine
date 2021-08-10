@@ -7,16 +7,15 @@ namespace App\CustomRepo;
 
  class Eloquentrepo implements Searchrepo
  {
-     public function search(string $query=''): Collection
-     {
-        return Book::query()->with('book.author.name','book.author.email')
-             
-            ->Where('name', 'LIKE', "%{$query}%")
+    public function search(string $query=''): Collection
+    { //echo $query; die;
+        return Book::query()
+            ->join('authors','authors.id','=','books.author_id')
+            ->Where('book_name', 'LIKE', "%{$query}%")
             ->orWhere('email', 'LIKE', "%{$query}%")
-            ->orWhere('edition', 'LIKE', "%{$query}%")
+            ->orWhere('author_name', 'LIKE', "%{$query}%")
             ->orWhere('price', 'LIKE', "%{$query}%")
             ->get();
-
-     }
+    }
  } 
  ?>

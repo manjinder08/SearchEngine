@@ -11,7 +11,7 @@
 
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </head>
-<nav class="bg-gray-800">
+<nav class="bg-gray-800  ">
   <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
     <div class="relative flex items-center justify-between h-16">
       <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -40,18 +40,27 @@
           </svg>
         </button>
       </div>
+
       <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
         <div class="flex-shrink-0 flex items-center">
             <img class="lg:block h-8 w-auto" src="/images/elasticsearch.png" alt="Elastic">
             <h2 class="ml-4 text-white font-bold">Elastic Search</h2>
         </div>
+        @if(Session::has('users'))
         <div class="flex ml-auto">
+        <form action="{{ url('search') }}" method="get">
                 <input class="w-96 rounded-lg p-2 h-10 outline-none" type="text" placeholder="Search..." value="{{ request('query') }}" name="query">
-                <button type="submit" class="mr-auto justify-end items-center text-blue-500 p-2 hover:text-blue-400 " >
-                    <i class="material-icons" style="margin-left: -70px;">search</i>
+                <button type="submit" class="mr-auto mt-2 justify-end items-center text-blue-500 p-2 hover:text-blue-400 " >
+                    <i class="material-icons " style="margin-left: -70px;">search</i>
                     
                 </button>
+        </form>
+      <a class="text-white my-auto " href="{{ url('logout') }}">Logout   |</a>
+      <span class="text-white my-auto mx-1">  {{Session::get('users.name')}} </span>
+
+        @endif
         </div>
+        
       </div>
       </div>
     </div>

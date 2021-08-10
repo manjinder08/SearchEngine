@@ -14,7 +14,7 @@
     }
 
     public function getSearchIndex()
-    { 
+    {     
         return $this->getTable();
         
     }

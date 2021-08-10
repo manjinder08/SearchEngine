@@ -4,7 +4,8 @@ namespace App\Console\Commands;
 
 use App\CustomRepo;
 use Illuminate\Console\Command;
-use App\Models\Registration;
+use App\Models\Book;
+use App\Models\Author;
 use Elasticsearch\Client;
 
 class ReindexCommand extends Command
@@ -42,19 +43,44 @@ class ReindexCommand extends Command
      */
     public function handle()
     {
-        $this->info('Indexing all Registrations. This might take a while...');
-        foreach (Book::cursor() as $users)
-        {
+        $this->info('Indexing all Data. This might take a while...');
+
+        $user = Book::cursor();
+        foreach ($user as $users)
+        
+    {
+               
             $this->elasticsearch->index([
                 'index' => $users->getSearchIndex(),
                 'type' => $users->getSearchType(),
                 'id' => $users->getKey(),
                 'body' => $users->toSearchArray(),
             ]);
-            $this->output->write('.');
+            // print_r( $users->getKey());
+            print_r($users->toSearchArray());
+                       
+                    //    print_r($users->getSearchIndex());
         }
+        
         $this->info("\nDone!");
         return 0;
     }
 }
+
+
+
+ // foreach (Author::cursor() as $users)
+        // {              
+        //             print_r($users->toSearchArray());
+        //            // print_r( $users->getSearchType());
+        //            // print_r($users->getSearchIndex());
+        //             print_r( $users->getKey());
+        //     $this->elasticsearch->index([
+        //         'index' => $users->getSearchIndex(),
+        //         'type' => $users->getSearchType(),
+        //         'id' => $users->getKey(),
+        //         'body' => $users->toSearchArray(),
+        //     ]);
+        //     $this->output->write('.');
+        // }
 ?>

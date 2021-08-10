@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Observers\Searchable;
 
 class Book extends Model
 {
-    use HasFactory;
+    use HasFactory , Searchable;
     protected $fillable = [
-        'name',
-        'edition',
+        'book_name',
         'price',
     ];
     public function author(){

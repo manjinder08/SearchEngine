@@ -24,56 +24,61 @@ class Elasticsearchrepo implements Searchrepo
     }
     private function searchOnElasticsearch(string $query = ''): array
     { 
-        $model = new Author;
-            $author = $this->elasticsearch->search([
-            'index' => $model->getSearchIndex(),
-            'type' => $model->getSearchType(),
-            'body' => [
+        
+
+        $model = new Book;
+            $items = $this->elasticsearch->search([
+            'index' =>$model->getSearchIndex(),
+            'type'  => $model->getSearchType(),
+            'body'  => [
                 'query' => [
                     'multi_match' => [
-                        'fields' => ['name^5', 'email','contact'],
-                        'query' => $query,
+                        'fields'  => ['author_name^4', 'price','book_name^5','email','contact'],
+                        'query'   => $query,
                     ],
                 ],
             ],
         ]);
-        $b= new Book;
-        $book = $this->elasticsearch->search([
-            'index' => $b->getSearchIndex(),
-            'type' => $b->getSearchType(),
-            'body' => [
-                'query' => [
-                    'multi_match' => [
-                        'fields' => ['name^5', 'edition','price'],
-                        'query' => $query,
-                    ],
-                ],
-            ],
-        ]);
-            $p= new Publisher;
-        $publisher = $this->elasticsearch->search([
-            'index' => $p->getSearchIndex(),
-            'type' => $p->getSearchType(),
-            'body' => [
-                'query' => [
-                    'multi_match' => [
-                        'fields' => ['name^5', 'email','country','phone'],
-                        'query' => $query,
-                    ],
-                ],
-            ],
-        ]);
-       return $items=with($author,$book,$publisher);
+       dd($items);
+       return $items;
     }
 
     private function buildCollection(array $items): Collection
-    {
-        $ids = Arr::pluck($items['hits']['hits'], '_id');
-
-        return Book::findMany($ids)
-            ->sortBy(function ($users) use ($ids) {
-                return array_search($users->getKey(), $ids);
+    {  // print_r($items);
+        $sources = Arr::pluck($items['hits']['hits'], '_source'); 
+        //print_r($sources);
+        $ids = Arr::pluck($sources, 'id'); 
+        //print_r($ids);die;
+    $a= Book::findMany($ids)
+                ->sortBy(function ($users) use ($ids) {
+               return array_search($users->getKey(), $ids);
             });
+   print($a); die;
+// return $a;
     }
 }
+
+
+    //     $model2 = new Author;
+    //     $items2 = $this->elasticsearch->search([
+    //     'index' => $model2->getSearchIndex(),
+    //     'type' => $model2->getSearchType(),
+    //     'body' => [
+    //         'query' => [
+    //             'multi_match' => [
+    //                 'fields' => ['author_name^5', 'email','contact'],
+    //                 'query' => $query,
+    //             ],
+    //         ],
+    //     ],
+    // ]);
+    // foreach($items1 as $item) {
+    //     $items2->add($item);
+    // }
+//    $items= array_merge($items1,$items2);
 ?>
+
+
+
+
+
